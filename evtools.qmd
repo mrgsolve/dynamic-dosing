@@ -1,0 +1,140 @@
+---
+title: "Untitled"
+format: 
+  html: 
+    self-contained: true
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r}
+#| message: false
+#| warning: false
+library(mrgsolve)
+library(dplyr)
+```
+
+
+# evtools-1
+
+```{c, code = readLines("model/evtools-1.mod")}
+#| eval: false
+```
+
+
+```{r}
+#| message: false
+#| warning: false
+mod <- mread("model/evtools-1.mod")
+out <- mrgsim(mod, end = 320)
+plot(out)
+```
+
+```{r}
+idata <- expand.idata(DOSE = c(100, 300, 1000))
+head(idata)
+out <- mrgsim(mod, idata = idata, end = 380)
+plot(out)
+```
+
+```{r}
+idata <- expand.idata(DOSE = 100, INTERVAL = c(6, 12, 24, 48))
+idata <- mutate(idata, TOTAL = 10*24/INTERVAL)
+head(idata)
+out <- mrgsim(mod, idata = idata, end = 380)
+plot(out)
+```
+
+
+# evtools-2
+
+```{r}
+#| message: false
+#| warning: false
+mod <- mread("model/evtools-2.mod")
+out <- mrgsim(mod, end = 380)
+plot(out)
+```
+
+```{r}
+idata <- expand.idata(DOSE = c(100, 200, 300))
+head(idata)
+out <- mrgsim(mod, idata = idata, end = 380)
+plot(out)
+```
+
+# evtools-3
+
+```{r}
+#| message: false
+#| warning: false
+mod <- mread("model/evtools-3.mod")
+out <- mrgsim(mod, end = 480)
+plot(out)
+```
+
+
+```{r}
+idata <- expand.idata(DOSE = 100, INTERVAL = c(6, 12, 24, 48))
+idata <- mutate(idata, TOTAL = 10*24/INTERVAL)
+head(idata)
+out <- mrgsim(mod, idata = idata, end = 380)
+plot(out)
+```
+
+# evtools-4
+
+```{r}
+#| message: false
+#| warning: false
+mod <- mread("model/evtools-4.mod")
+out <- mrgsim(mod, end = 480)
+plot(out)
+```
+
+```{r}
+idata <- expand.idata(END = c(60, 120, 240, 480, 600))
+head(idata)
+out <- mrgsim(mod, idata = idata, end = 680, recover = "END")
+plot(out, CP ~ time | factor(END))
+```
+
+# evtools-5
+
+Dose later. 
+
+```{r}
+#| message: false
+#| warning: false
+mod <- mread("model/evtools-5.mod")
+idata <- expand.idata(DOSE = c(100, 150, 200))
+head(idata)
+out <- mrgsim(mod, idata = idata, end = 480)
+plot(out)
+```
+
+# evtools-6
+
+Reset.
+
+```{r}
+#| message: false
+#| warning: false
+mod <- mread("model/evtools-6.mod")
+out <- mrgsim(mod, end = 680)
+plot(out)
+```
+
+# evtools-7
+
+Reset and dose.
+
+```{r}
+#| message: false
+#| warning: false
+mod <- mread("model/evtools-7.mod")
+out <- mrgsim(mod, end = 680)
+plot(out)
+```
+

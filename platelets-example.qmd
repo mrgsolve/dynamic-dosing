@@ -1,0 +1,30 @@
+---
+format: 
+  pdf: 
+    code-line-numbers: false
+    geometry: 
+      - paperheight=4.3in
+      - paperwidth=4.4in 
+      - margin=0.1in
+---
+
+```{r, echo = FALSE, message = FALSE}
+library(mrgsolve)
+library(dplyr)
+set.seed(1023)
+options(mrgsolve.project = "model")
+```
+
+
+
+```{r, echo = TRUE, message = FALSE}
+mod <- mread("platelet.mod", end = 1680, delta = 24)
+
+idata <- expand.idata(ID = 1:30, ADJUST = 0)
+
+out <- mrgsim_i(mod, idata, tscale = 1/168)
+```
+
+```{r, echo = FALSE, fig.width = 5}
+plot(out, "UNBOUND,PLATELET")
+```
