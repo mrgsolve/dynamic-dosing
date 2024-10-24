@@ -1,12 +1,12 @@
 [ plugin ] evtools
 
-[ set ] outvars = "CP"
+[ set ] outvars = "A1,CP"
 
 [ param ] 
 
 CL = 1
 V = 32
-KA = 1
+KA = 0.1
 
 [ pkmodel ]
 

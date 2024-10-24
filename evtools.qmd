@@ -392,8 +392,8 @@ syntax for replacing compartment amounts.
 ```{r}
 #| message: false
 #| warning: false
-mod <- mread("model/evtools-8.mod", param = list(KA = 0.1))
-out <- mrgsim(mod, end = 300, outvars = c("A1", "CP"))
+mod <- mread("model/evtools-8.mod")
+out <- mrgsim(mod, end = 300)
 plot(out)
 ```
 
@@ -457,6 +457,8 @@ plot(out)
 ```{r}
 #| message: false
 #| warning: false
+#| fig.width: 8
+#| fig.height: 5
 idata <- expand.idata(DOSE = c(100, 150, 300), UNTIL = c(240,480))
 idata
 out <- mrgsim(mod, idata = idata, end = 680, recover = "DOSE,UNTIL") 
