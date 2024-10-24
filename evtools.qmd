@@ -15,6 +15,22 @@ editor_options:
 
 # Overview
 
+`evtools` is a [plugin](https://mrgsolve.org/user-guide/plugins.html#sec-plugin-evtools) 
+for mrgsolve that exposes extra code you can use in your
+model code to execute dosing or other events in a simulations. Normally, these
+doses are given through a data set. However, sometimes we'd like to alter 
+the dose regimen in response to how the system advances in time and that can 
+only be done through mechanisms such as `evtools`. Note that the examples 
+shown here do execute dosing regimens in a variety of ways, none of it is 
+actually in response to the ongoing simulation. I did this for clarity, keeping
+the focus on the dosing syntax rather than complexity in responding to other
+parts of the system.
+
+All of the code for running these examples is available in a 
+[github](https://github.com/mrgsolve/dynamic-dosing) repository.
+
+## Setup
+
 We'll use these packages to run the code. 
 
 ```{r}
@@ -30,8 +46,10 @@ And I'm writing these examples with the following mrgsolve version
 packageVersion("mrgsolve")
 ```
 
+## Base model
 
-The general model looks like this
+All of the examples are based on a simple one-compartment PK model shown here:
+
 
 ```{c, eval = FALSE}
 [ plugin ] evtools
@@ -49,8 +67,33 @@ The general model looks like this
 [ error ] capture CP = A2/V;
 ```
 
+I'll make some minor tweaks to parameter values and outputs from time to time, 
+but the model will largely stay like this, except for the `$EVENT` block. 
+Each example will update the code in that block to illustrate different 
+functionality provided by `evtools`. 
 
+Note that you need to invoke the `evtools` plugin to get this code to work
 
+```{c, eval = FALSE}
+[ plugin ] evtools
+```
+
+Also note that we write code to do dynamic dosing in the `[ event ]` block
+
+```{c, eval = FALSE}
+[ event ] 
+
+// Do something <------ we'll vary what is in this block
+```
+
+This is a new block with mrgsolve version 1.5.2. The block functions like and 
+is called just prior to `$ERROR` (or `$TABLE`). So the important part here 
+is that your event code gets called just as the system advances to the next 
+time and just prior to writing outputs for the most recent advance. While 
+you can also run model event code in `$PK`, we recommend always writing the 
+code in `$EVENT`. 
+
+Let's get to the worked examples.
 
 # Examples
 
