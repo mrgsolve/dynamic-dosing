@@ -3,12 +3,14 @@ title: "Examples with evtools"
 subtitle: This vignette provides worked examples showing different approaches to executing modeled events. 
 author: Kyle Baron
 date: today
+fig-align: center
 #title-block-banner: "#F5F5F5"
 #title-block-banner-color: black
 format: 
   html: 
     self-contained: true
     toc: true
+    fig-align: center
 editor_options: 
   chunk_output_type: console
 ---
@@ -118,6 +120,7 @@ be easier!
 ```{r}
 #| message: false
 #| warning: false
+#| fig-align: center
 idata <- expand.idata(DOSE = c(100, 200, 300))
 idata
 mod <- mread("model/evtools-0.mod")
@@ -153,6 +156,7 @@ First, an example with a single dose level
 ```{r}
 #| message: false
 #| warning: false
+#| fig-align: center
 mod <- mread("model/evtools-1.mod")
 out <- mrgsim(mod, end = 320)
 plot(out)
@@ -161,6 +165,9 @@ plot(out)
 Next, look at multiple dose levels
 
 ```{r}
+#| message: false
+#| warning: false
+#| fig-align: center
 idata <- expand.idata(DOSE = c(100, 300, 1000))
 head(idata)
 out <- mrgsim(mod, idata = idata, end = 380)
@@ -170,6 +177,9 @@ plot(out)
 We can also look at a single dose and  multiple dose intervals
 
 ```{r}
+#| message: false
+#| warning: false
+#| fig-align: center
 idata <- expand.idata(DOSE = 100, INTERVAL = c(6, 12, 24, 48))
 idata <- mutate(idata, TOTAL = 10*24/INTERVAL)
 head(idata)
@@ -204,6 +214,7 @@ First, do a single dose level to steady state
 ```{r}
 #| message: false
 #| warning: false
+#| fig-align: center
 mod <- mread("model/evtools-2.mod")
 out <- mrgsim(mod, end = 380)
 plot(out)
@@ -212,6 +223,9 @@ plot(out)
 Next look at several dose levels, administered to steady states
 
 ```{r}
+#| message: false
+#| warning: false
+#| fig-align: center
 idata <- expand.idata(DOSE = c(100, 200, 300))
 head(idata)
 out <- mrgsim(mod, idata = idata, end = 380)
@@ -240,6 +254,7 @@ shown below
 ```{r}
 #| message: false
 #| warning: false
+#| fig-align: center
 mod <- mread("model/evtools-3.mod")
 out <- mrgsim(mod, end = 480)
 plot(out)
@@ -249,6 +264,9 @@ Next, we show how you can simulate from this model, but with several different
 dosing intervals. 
 
 ```{r}
+#| message: false
+#| warning: false
+#| fig-align: center
 idata <- expand.idata(DOSE = 100, INTERVAL = c(6, 12, 24, 48))
 idata <- mutate(idata, TOTAL = 10*24/INTERVAL)
 head(idata)
@@ -286,6 +304,7 @@ First, simulate a single dose level and dosing duration
 ```{r}
 #| message: false
 #| warning: false
+#| fig-align: center
 mod <- mread("model/evtools-4.mod")
 out <- mrgsim(mod, end = 480)
 plot(out)
@@ -295,6 +314,9 @@ Next, do some sensitivity analysis on `END`, a parameter controlling
 the duration of dosing. 
 
 ```{r}
+#| message: false
+#| warning: false
+#| fig-align: center
 idata <- expand.idata(END = c(60, 120, 240, 480, 600))
 head(idata)
 out <- mrgsim(mod, idata = idata, end = 680, recover = "END")
@@ -329,6 +351,7 @@ In this example, we'll again simulate several dose levels
 ```{r}
 #| message: false
 #| warning: false
+#| fig-align: center
 mod <- mread("model/evtools-5.mod")
 idata <- expand.idata(DOSE = c(100, 150, 200))
 head(idata)
@@ -361,6 +384,7 @@ if(std::fmod(TIME,72)==0 || NEWIND <= 1) {
 ```{r}
 #| message: false
 #| warning: false
+#| fig-align: center
 mod <- mread("model/evtools-6.mod")
 out <- mrgsim(mod, end = 680)
 plot(out)
@@ -397,6 +421,7 @@ reset and give infusions by passing the infusion rate in to `evt::reset()`.
 ```{r}
 #| message: false
 #| warning: false
+#| fig-align: center
 mod <- mread("model/evtools-7.mod")
 out <- mrgsim(mod, end = 680)
 plot(out)
@@ -435,6 +460,7 @@ syntax for replacing compartment amounts.
 ```{r}
 #| message: false
 #| warning: false
+#| fig-align: center
 mod <- mread("model/evtools-8.mod")
 out <- mrgsim(mod, end = 300)
 plot(out)
@@ -492,6 +518,7 @@ regimen.
 ```{r}
 #| message: false
 #| warning: false
+#| fig-align: center
 mod <- mread("model/evtools-99.mod")
 out <- mrgsim(mod, end = 680) 
 plot(out)
@@ -500,6 +527,7 @@ plot(out)
 ```{r}
 #| message: false
 #| warning: false
+#| fig-align: center
 #| fig.width: 8
 #| fig.height: 5
 idata <- expand.idata(DOSE = c(100, 150, 300), UNTIL = c(240,480))
