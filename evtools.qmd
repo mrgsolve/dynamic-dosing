@@ -235,6 +235,9 @@ if(evt::near(TIME, nextdose)) {
 }
 ```
 
+The `evt::near()` function works just like the [dplyr function](https://dplyr.tidyverse.org/reference/near.html). 
+
+
 First, simulate a single dose level and dosing duration
 
 ```{r}
@@ -356,6 +359,55 @@ out <- mrgsim(mod, end = 680)
 plot(out)
 ```
 
+
+## evtools-8 replace
+
+The replace functionality works like a bolus dose, but the amount in the
+compartment is overwritten with `amt` rather than adding `amt` to the current
+amount in the compartment The replace functionality isn't easily illustrated
+with a PK model like this; usually we replace with a unit indicator or something
+along those lines. But I'll force the code into this model so you can see what
+it happens.
+
+In the example, we start an infusion in to the depot compartment at 48 hours 
+and let it run until 148 hours. At 150 hours, we drop the amount in the 
+central compartment to 10 and then watch the end of absorption happen. 
+
+```{c, eval = FALSE}
+[ event ] 
+
+if(evt::near(TIME, 48)) {  
+  evt::infuse(self, 300, 1, 3);
+}
+
+if(evt::near(TIME, 150)) {  
+  evt::replace(self, 10, 2);
+}
+```
+
+It's not a simulation we'd normally do, but including it here to show the 
+syntax for replacing compartment amounts.
+
+
+```{r}
+#| message: false
+#| warning: false
+mod <- mread("model/evtools-8.mod", param = list(KA = 0.1))
+out <- mrgsim(mod, end = 300, outvars = c("A1", "CP"))
+plot(out)
+```
+
+`replace()` is also _similar_ to `reset()`. Specifically, when you reset or 
+replace, there is a discontinuity introduced in the simulation. The ODE 
+sovler (if used) resets at the event time and starts again from the event time.
+
+Some differences between `replace()` and `reset()` are
+
+1. `replace()` works on a single compartment, `reset()` works on all compartments
+1. `replace()` sets the compartment amount to a user-chosen value, `reset()` 
+  returns compartment amounts back to the initial condition
+
+
 ## evtools-99 automatic dose regimen
 
 This example shows how you can create a `regimen` object that will implement a
@@ -410,3 +462,11 @@ idata
 out <- mrgsim(mod, idata = idata, end = 680, recover = "DOSE,UNTIL") 
 plot(out, CP ~ time |factor(DOSE)*factor(UNTIL))
 ```
+
+# Source code
+
+You can find the source code for this vignette here: [https://github.com/mrgsolve/dynamic-dosing](https://github.com/mrgsolve/dynamic-dosing)
+
+You can find the source code for these models here: 
+[https://github.com/mrgsolve/dynamic-dosing/tree/main/model](https://github.com/mrgsolve/dynamic-dosing/tree/main/model)
+
