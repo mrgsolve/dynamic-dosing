@@ -1,12 +1,19 @@
 ---
-title: "Untitled"
+title: "Examples with `evtools`"
+subtitle: This vignette provides worked examples showing different approaches to executing modeled events. 
+author: Kyle Baron
+date: today
 format: 
   html: 
     self-contained: true
+    toc: true
 editor_options: 
   chunk_output_type: console
 ---
 
+# Overview
+
+We'll use these packages to run the code. 
 
 ```{r}
 #| message: false
@@ -15,13 +22,88 @@ library(mrgsolve)
 library(dplyr)
 ```
 
+And I'm writing these examples with the following mrgsolve version
 
-# evtools-1
-
-```{c, code = readLines("model/evtools-1.mod")}
-#| eval: false
+```{r}
+packageVersion("mrgsolve")
 ```
 
+
+The general model looks like this
+
+```{c, eval = FALSE}
+[ plugin ] evtools
+
+[ set ] outvars = "CP"
+
+[ param ] CL = 1, V = 32, KA = 2, DOSE = 100
+
+[ pkmodel ] cmt = "A1,A2", depot = TRUE
+
+[ event ] 
+
+// Do something <------ we'll vary what is in this block
+
+[ error ] capture CP = A2/V;
+```
+
+
+
+
+# Examples
+
+## evtools-0 single dose
+
+In this event block, we just need to execute a single dose to `A1` right when 
+we come to a new individual
+
+```{c, eval = FALSE}
+[ event ] 
+
+if(NEWIND > 1) return; 
+
+evt::bolus(self, DOSE, 1); 
+```
+
+Because we don't need to customize this dose at all, pass `self` as the first
+argument and `evt::bolus` will "send" it back to mrgsolve for you. Couldn't 
+be easier!
+
+
+```{r}
+#| message: false
+#| warning: false
+idata <- expand.idata(DOSE = c(100, 200, 300))
+idata
+mod <- mread("model/evtools-0.mod")
+out <- mrgsim(mod, idata = idata, end = 72, delta = 0.2)
+plot(out)
+```
+
+
+## evtools-1 additional doses
+
+In this example, we give multiple doses by specifying the dose interval and 
+the number of additional doses. 
+
+```{c, eval = FALSE}
+[ event ] 
+
+if(NEWIND > 1) return; 
+
+evt::ev dose = evt::bolus(DOSE, 1); 
+evt::ii(dose, INTERVAL); 
+evt::addl(dose, TOTAL-1); 
+self.push(dose); 
+```
+
+Here, we call `evt::bolus()` _without_ passing `self`. This means we'll get 
+and object back that we can customize, adding the dosing interval `ii`
+and number of additional doses `addl`. Once we're done customizing, 
+we need to `push` the object back for processing.
+
+
+First, an example with a single dose level
 
 ```{r}
 #| message: false
@@ -31,12 +113,16 @@ out <- mrgsim(mod, end = 320)
 plot(out)
 ```
 
+Next, look at multiple dose levels
+
 ```{r}
 idata <- expand.idata(DOSE = c(100, 300, 1000))
 head(idata)
 out <- mrgsim(mod, idata = idata, end = 380)
 plot(out)
 ```
+
+We can also look at a single dose and  multiple dose intervals
 
 ```{r}
 idata <- expand.idata(DOSE = 100, INTERVAL = c(6, 12, 24, 48))
@@ -47,7 +133,28 @@ plot(out)
 ```
 
 
-# evtools-2
+## evtools-2 additional doses, steady state
+
+In this example, we create an object for a bolus dose, then modify it to 
+dose to steady state at a given dosing interval (a parameter called
+`INTERVAL`) and give some additional doses (a parameter called `TOTAL`).
+
+```{c, eval = FALSE}
+[ event ] 
+
+if(NEWIND > 1) return; 
+
+evt::ev dose = evt::bolus(DOSE, 1); 
+evt::ss(dose, 1);
+evt::ii(dose, INTERVAL); 
+evt::addl(dose, TOTAL-1); 
+self.push(dose); 
+```
+
+Because we're working on this event object, we need to `push()` it back 
+to mrgsolve for processing.
+
+First, do a single dose level to steady state
 
 ```{r}
 #| message: false
@@ -57,6 +164,8 @@ out <- mrgsim(mod, end = 380)
 plot(out)
 ```
 
+Next look at several dose levels, administered to steady states
+
 ```{r}
 idata <- expand.idata(DOSE = c(100, 200, 300))
 head(idata)
@@ -64,7 +173,24 @@ out <- mrgsim(mod, idata = idata, end = 380)
 plot(out)
 ```
 
-# evtools-3
+## evtools-3 multiple doses, user-controlled A
+
+This example also shows multiple doses, but rather than 
+scheduling them through `addl()`, we write our own code to manage 
+the dosing interval. The benefit of this "user-controlled" approach is that
+you always know when the next dose will happen. Although not illustrated 
+here, this allows you to delay a dose or move a dose up in time. 
+
+```{c, eval = FALSE}
+[ event ] 
+
+if(std::fmod(TIME,INTERVAL)==0) {
+  evt::infuse(self, DOSE, 1, DOSE/OVER); 
+}
+```
+
+If `INTERVAL` is 24, we will get doses every 24 hours, as 
+shown below
 
 ```{r}
 #| message: false
@@ -74,6 +200,8 @@ out <- mrgsim(mod, end = 480)
 plot(out)
 ```
 
+Next, we show how you can simulate from this model, but with several different
+dosing intervals. 
 
 ```{r}
 idata <- expand.idata(DOSE = 100, INTERVAL = c(6, 12, 24, 48))
@@ -83,7 +211,29 @@ out <- mrgsim(mod, idata = idata, end = 380)
 plot(out)
 ```
 
-# evtools-4
+## evtools-4 multiple doses, user-controlled B
+
+This example is just another way to implement the bookkeeping required to 
+track when the next dose is given, and alter the dosing time if needed. I 
+think this approach is a little more flexible than what we saw in 
+`evtools-3`. 
+
+```{c, eval = FALSE}
+[ event ] 
+
+if(TIME > END) return;
+
+if(NEWIND <=1 ) { 
+  double nextdose = 0;
+}
+
+if(evt::near(TIME, nextdose)) {
+  evt::infuse(self, DOSE, 1, DOSE/OVER); 
+  nextdose = nextdose + INTERVAL;
+}
+```
+
+First, simulate a single dose level and dosing duration
 
 ```{r}
 #| message: false
@@ -93,6 +243,9 @@ out <- mrgsim(mod, end = 480)
 plot(out)
 ```
 
+Next, do some sensitivity analysis on `END`, a parameter controlling
+the duration of dosing. 
+
 ```{r}
 idata <- expand.idata(END = c(60, 120, 240, 480, 600))
 head(idata)
@@ -100,9 +253,30 @@ out <- mrgsim(mod, idata = idata, end = 680, recover = "END")
 plot(out, CP ~ time | factor(END))
 ```
 
-# evtools-5
+See `model/evtools-4.mod` for more details on how this is set up.
 
-Dose later. 
+## evtools-5 start dosing later
+
+This example looks just like the `evtools-2` model, but this time 
+we'll start the dose later in the simulation. In contrast, 
+`evtools-2` started the dosing "now".
+
+```{c, eval = FALSE}
+[ event ] 
+
+if(NEWIND > 1) return; 
+
+evt::ev dose = evt::bolus(DOSE, 1); 
+evt::rate(dose, DOSE/OVER);
+evt::retime(dose, 120); 
+evt::ss(dose, 1); 
+evt::ii(dose, 24); 
+evt::addl(dose, 5); 
+
+self.push(dose);
+```
+
+In this example, we'll again simulate several dose levels
 
 ```{r}
 #| message: false
@@ -114,9 +288,27 @@ out <- mrgsim(mod, idata = idata, end = 480)
 plot(out)
 ```
 
-# evtools-6
+## evtools-6 reset the system
 
-Reset.
+This is a simple intervention to reset the system every 72 hours. I'm 
+including the `$PK` block as well, to show that the compartment 2 
+initial value is 1000 units. By resetting the system every 72 hours, 
+it appears like we could be dosing with that dose interval. But the 
+simulation is different than every 72 hour dosing because we reset the 
+system so the Amax in compartment 2 is always 1000; if we were dosing
+1000 mg Q72 hours, Amax would increase over time due to accumulation.
+
+```{c, eval = FALSE}
+[ pk ] 
+A1_0 = 0; 
+A2_0 = 1000;
+
+[ event ] 
+
+if(std::fmod(TIME,72)==0 || NEWIND <= 1) {  
+  evt::reset(self);
+}
+```
 
 ```{r}
 #| message: false
@@ -126,9 +318,33 @@ out <- mrgsim(mod, end = 680)
 plot(out)
 ```
 
-# evtools-7
+## evtools-7 reset and dose
 
-Reset and dose.
+This example shows how we can reset the system and then dose.
+
+```{c, eval = FALSE}
+[ event ] 
+
+if(NEWIND <= 1) { 
+  evt::ev dose = evt::bolus(50, 1);
+  evt::ii(dose,12); 
+  evt::addl(dose,22);
+  self.push(dose);
+}
+
+if(evt::near(TIME,290)) {  
+  evt::ev dose = evt::reset(100, 1);
+  evt::ii(dose, 24); 
+  evt::addl(dose,10);
+  self.push(dose);
+}
+```
+
+The simulation starts out with a sequence of 23 doses, given every 12 hours. 
+Then at 290 hours, we reset the system and dose 100 mg every 24 hours. In 
+this example, we continue giving bolus doses after the reset. We could also 
+reset and give infusions by passing the infusion rate in to `evt::reset()`.
+
 
 ```{r}
 #| message: false
