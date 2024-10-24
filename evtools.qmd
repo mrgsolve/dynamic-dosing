@@ -1,8 +1,10 @@
 ---
-title: "Examples with `evtools`"
+title: "Examples with evtools"
 subtitle: This vignette provides worked examples showing different approaches to executing modeled events. 
 author: Kyle Baron
 date: today
+#title-block-banner: "#F5F5F5"
+#title-block-banner-color: black
 format: 
   html: 
     self-contained: true
@@ -354,3 +356,57 @@ out <- mrgsim(mod, end = 680)
 plot(out)
 ```
 
+## evtools-99 automatic dose regimen
+
+This example shows how you can create a `regimen` object that will implement a
+dosing regimen that can be updated as the simulation proceeds. Notice that 
+we have some additional code here, including declaring this `regimen` object
+(`reg`) in the global block.
+
+
+```{c, eval = FALSE}
+[ global ]
+evt::regimen reg; 
+
+[ event ] 
+
+if(NEWIND <=1) reg.init(self);
+
+reg.ii(INTERVAL);
+reg.amt(DOSE);
+reg.rate(reg.amt() / OVER);
+reg.until(UNTIL);
+
+reg.execute();
+```
+
+
+Previously, we implemented dosing regimens by scheduling additional doses
+through `evt::addl()` and we've also implemented doing regimens where we have
+had to do the bookkeeping to track the dosing interval and always setting the
+time for the next dose. Using `addl()` gets you out of doing the bookkeeping,
+but all the doses in the regimen are set up and you can't change what happens in
+the future. User-implemented regimens are more flexible, but require some
+creativity to do the bookkeeping. Using a `regimen` object splits that
+difference, allowing you to start dosing at a given interval with mrgsolve
+tracking when is the next dose time. But flexibility is retained with the
+ability to update dose amount, dose interval, duration of dosing on the fly,
+with those changes automatically getting folded into the execution of the
+regimen.
+
+```{r}
+#| message: false
+#| warning: false
+mod <- mread("model/evtools-99.mod")
+out <- mrgsim(mod, end = 680) 
+plot(out)
+```
+
+```{r}
+#| message: false
+#| warning: false
+idata <- expand.idata(DOSE = c(100, 150, 300), UNTIL = c(240,480))
+idata
+out <- mrgsim(mod, idata = idata, end = 680, recover = "DOSE,UNTIL") 
+plot(out, CP ~ time |factor(DOSE)*factor(UNTIL))
+```
