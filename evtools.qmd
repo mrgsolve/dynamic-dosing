@@ -20,16 +20,18 @@ editor_options:
 
 # Overview
 
-`evtools` is a [plugin](https://mrgsolve.org/user-guide/plugins.html#sec-plugin-evtools) 
-for mrgsolve that exposes extra code you can use in your
-model code to execute dosing or other events in a simulations. Normally, these
-doses are given through a data set. However, sometimes we'd like to alter 
-the dose regimen in response to how the system advances in time and that can 
-only be done through mechanisms such as `evtools`. Note that the examples 
-shown here do execute dosing regimens in a variety of ways, none of it is 
-actually in response to the ongoing simulation. I did this for clarity, keeping
-the focus on the dosing syntax rather than complexity in responding to other
-parts of the system.
+Dynamic dosing in pharmacokinetic (PK) or pharmacokinetic pharmacodynamic (PKPD)
+models allows for changes in the dose regimen in response to changes in model
+state variables over the course of a simulation. `evtools` is a
+[plugin](https://mrgsolve.org/user-guide/plugins.html#sec-plugin-evtools) for
+mrgsolve that exposes extra code you can use in your model to execute dosing or
+other events dynamically in a simulation. Note that, while the examples shown
+here do execute dosing regimens from a model in a variety of ways, the actual
+dosing pattern does not respond to the evolution of the system. I did this for
+clarity, keeping the focus on the syntax to execute the doses rather than
+complexity that would be required to only dose in response to other parts of the
+system. In each example, it should be clear where decisions can be be made
+to alter dosing regimen specifics. 
 
 All of the code for running these examples is available in a 
 [github](https://github.com/mrgsolve/dynamic-dosing) repository.
