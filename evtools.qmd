@@ -1,6 +1,9 @@
 ---
-title: "Examples with evtools"
-subtitle: This vignette provides worked examples showing different approaches to executing modeled events. 
+title: "Dynamic dosing with mrgsolve"
+subtitle: > 
+  This is a vignette showing worked examples implementing modeled doses or 
+  other events with the `evtools` plugin. All code is provided in a GitHub 
+  repository linked in the document.
 author: Kyle Baron
 date: today
 fig-align: center
