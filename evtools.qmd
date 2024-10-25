@@ -36,6 +36,13 @@ to alter dosing regimen specifics.
 All of the code for running these examples is available in a 
 [github](https://github.com/mrgsolve/dynamic-dosing) repository.
 
+## Reference
+
+**Simulating Adaptive Dosing Regimens from PK and PKPD Models Using mrgsolve**   
+15th American Conference on Pharmacometrics    
+Poster: [W-007](https://acop2024.eventscribe.net/fsPopup.asp?efp=T1ZGU0NGRkwyMjQ4Mw&PosterID=690467&rnd=0.4412162&mode=posterInfo), Wednesday November 13, 2024    
+Author: Kyle Baron
+
 ## Setup
 
 We'll use these packages to run the code. 
