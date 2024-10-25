@@ -468,7 +468,7 @@ plot(out)
 
 `replace()` is also _similar_ to `reset()`. Specifically, when you reset or 
 replace, there is a discontinuity introduced in the simulation. The ODE 
-sovler (if used) resets at the event time and starts again from the event time.
+solver (if used) resets at the event time and starts again from the event time.
 
 Some differences between `replace()` and `reset()` are
 
@@ -533,16 +533,15 @@ if(COHORT==4) {
 }
 
 if(COHORT==5) {
-  evt::amt(dose, 50); 
   evt::ii(dose, 12); 
   evt::addl(dose, 3);
   self.push(dose);
   
-  evt::ev dose2 = evt::infuse(75, 1, 75.0/2.0); 
-  evt::retime(dose2, 48);
-  evt::ii(dose2, 24); 
-  evt::addl(dose2, DAYS-3);
-  self.push(dose2);
+  evt::amt(dose, 75);
+  evt::retime(dose, 48);
+  evt::ii(dose, 24); 
+  evt::addl(dose, DAYS-3);
+  self.push(dose);
   return;
 }
 ```
@@ -550,7 +549,7 @@ if(COHORT==5) {
 :::
 
 
-Run a test simulation from cohort 5
+Run a test simulation from Cohort 5
 
 ```{r}
 #| message: false
@@ -569,12 +568,18 @@ Then examine all the cohorts in a single run
 #| fig.width: 8
 #| fig.height: 5
 #| fig-align: center
-mod <- mread("model/evtools-9.mod")
 idata <- expand.idata(COHORT = seq(5))
 idata
 out <- mrgsim(mod, idata = idata, end = 480, recover = "COHORT")
 plot(out, CP ~ time | factor(COHORT), scales = "same")
 ```
+
+This is admittedly a little gimmicky. To actually implement this, you'd likely
+have a model and a finite set of dose regimens that you're very interested in
+and need to simulate over and over. Because `COHORT` defaults to 0 (no modeled
+events), you can always pass in your own data set and simulate from that instead
+of the hard-coded cohorts. So take it for what it's worth. I hope it still
+inspires you to get creative with using this `evtools` plugin.
 
 
 ## evtools-99 automatic dose regimen

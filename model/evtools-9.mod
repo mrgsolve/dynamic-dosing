@@ -50,16 +50,15 @@ if(COHORT==4) {
 }
 
 if(COHORT==5) {
-  evt::amt(dose, 50); 
   evt::ii(dose, 12); 
   evt::addl(dose, 3);
   self.push(dose);
   
-  evt::ev dose2 = evt::infuse(75, 1, 75.0/2.0); 
-  evt::retime(dose2, 48);
-  evt::ii(dose2, 24); 
-  evt::addl(dose2, DAYS-3);
-  self.push(dose2);
+  evt::amt(dose, 75);
+  evt::retime(dose, 48);
+  evt::ii(dose, 24); 
+  evt::addl(dose, DAYS-3);
+  self.push(dose);
   return;
 }
 
