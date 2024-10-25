@@ -2,9 +2,9 @@
 # Tools for dynamic dosing
 
 ## Poster
-Simulating Adaptive Dosing Regimens from PK and PKPD Models Using mrgsolve
-15th American Conference on Pharmacometrics
-Poster: W-007, Wednesday November 13, 2024
+Simulating Adaptive Dosing Regimens from PK and PKPD Models Using mrgsolve  
+15th American Conference on Pharmacometrics  
+Poster: W-007, Wednesday November 13, 2024  
 
 ## Content on this website
 
