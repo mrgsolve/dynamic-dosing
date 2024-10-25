@@ -1,5 +1,5 @@
 
-# Tools for dynamic dosing
+# Tools for dynamic dosing with mrgsolve
 
 ## Poster
 **Simulating Adaptive Dosing Regimens from PK and PKPD Models Using mrgsolve**   
