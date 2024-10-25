@@ -8,7 +8,7 @@ Poster: W-007, Wednesday November 13, 2024
 
 ## Content on this website
 
-Platelet PKPD [model](https://ascpt.onlinelibrary.wiley.com/doi/10.1002/psp4.13201) code 
+Platelet PKPD [model](https://ascpt.onlinelibrary.wiley.com/doi/10.1002/psp4.13201) code and outputs
 
 - Main model file is [here](https://github.com/mrgsolve/dynamic-dosing/blob/main/model/platelet.mod)
 - Monitoring code is [here](https://github.com/mrgsolve/dynamic-dosing/blob/main/model/monitor.h)
