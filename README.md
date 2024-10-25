@@ -16,8 +16,9 @@ Platelet model code
 - The [code](https://github.com/mrgsolve/dynamic-dosing/blob/main/platelets-adjust.R) used to generate poster Figure 3
 
 A [vignette](https://mrgsolve.org/dynamic-dosing) showing ten examples of dose
-regimen implementation inside your mrgsolve model. The full source code for all the models can 
-be found [here](https://github.com/mrgsolve/dynamic-dosing/tree/main/model).
+regimen implementation inside your mrgsolve model. The vignette source code is 
+[here](https://github.com/mrgsolve/dynamic-dosing/blob/main/evtools.qmd). The full source code 
+for all the models can be found [here](https://github.com/mrgsolve/dynamic-dosing/tree/main/model).
 
 
 
