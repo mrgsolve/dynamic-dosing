@@ -10,8 +10,8 @@ Poster: W-007, Wednesday November 13, 2024
 
 Platelet model code 
 
-- Main model file [here](https://github.com/mrgsolve/dynamic-dosing/blob/main/model/platelet.mod)
-- Monitoring code [here](https://github.com/mrgsolve/dynamic-dosing/blob/main/model/monitor.h)
+- Main model file is [here](https://github.com/mrgsolve/dynamic-dosing/blob/main/model/platelet.mod)
+- Monitoring code is [here](https://github.com/mrgsolve/dynamic-dosing/blob/main/model/monitor.h)
 - A simple [demonstration](https://github.com/mrgsolve/dynamic-dosing/blob/main/platelets-example.qmd) of invoking the platelet model with no dose adjustments (generates poster Figure 2)
 - The [code](https://github.com/mrgsolve/dynamic-dosing/blob/main/platelets-adjust.R) used to generate poster Figure 3
 
