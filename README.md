@@ -18,8 +18,8 @@ Platelet PKPD [model](https://ascpt.onlinelibrary.wiley.com/doi/10.1002/psp4.132
 A [vignette](https://mrgsolve.org/dynamic-dosing) showing ten examples of dose
 regimen implementation inside your mrgsolve model
 
-- The vignette source code is [here](https://github.com/mrgsolve/dynamic-dosing/blob/main/evtools.qmd). 
-- The full source code for all the models can be found [here](https://github.com/mrgsolve/dynamic-dosing/tree/main/model).
+- The vignette source code is [here](https://github.com/mrgsolve/dynamic-dosing/blob/main/evtools.qmd)
+- The full source code for all the models can be found [here](https://github.com/mrgsolve/dynamic-dosing/tree/main/model)
 
 
 
