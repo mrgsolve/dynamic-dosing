@@ -477,6 +477,106 @@ Some differences between `replace()` and `reset()` are
   returns compartment amounts back to the initial condition
 
 
+## evtools-9 pre-code dosing cohorts in the model
+
+In this example, we can pre-code different dosing regimens into the 
+model, and select them by "cohort" name (or number). 
+
+The dosing cohorts are 
+
+1. 50 mg daily 
+2. 75 mg daily
+3. 100 mg daily 
+4. 25 mg twice-daily
+5. 50 mg twice daily x4, then 75 mg daily
+
+We select the dosing regimen by specifying the `COHORT` parameter, ranging from
+1 to 5; no dosing takes place if `COHORT` is outside of this range. `COHORT`
+defaults to 0 for safety. There is a parameter called `DAYS` that controls the
+number of days of dosing.
+
+::: {.callout-note appearance="minimal" collapse="true"}
+# See cohort specification in the $EVENT block
+
+```{c, eval = FALSE}
+[ event ] 
+
+if(NEWIND > 1 || COHORT < 1 || COHORT > 5) return;
+
+evt::ev dose = evt::infuse(50, 1, 50); 
+evt::ii(dose, 24);
+evt::addl(dose, DAYS-1);
+
+if(COHORT==1) {
+  self.push(dose);
+  return;
+}
+
+if(COHORT==2) {
+  evt::amt(dose, 75);
+  self.push(dose);
+  return;
+}
+
+if(COHORT==3) {
+  evt::amt(dose, 100); 
+  self.push(dose);
+  return;
+}
+
+if(COHORT==4) {
+  evt::amt(dose, 25); 
+  evt::ii(dose, 12); 
+  evt::addl(dose, 2*DAYS-1);
+  self.push(dose);
+  return;
+}
+
+if(COHORT==5) {
+  evt::amt(dose, 50); 
+  evt::ii(dose, 12); 
+  evt::addl(dose, 3);
+  self.push(dose);
+  
+  evt::ev dose2 = evt::infuse(75, 1, 75.0/2.0); 
+  evt::retime(dose2, 48);
+  evt::ii(dose2, 24); 
+  evt::addl(dose2, DAYS-3);
+  self.push(dose2);
+  return;
+}
+```
+
+:::
+
+
+Run a test simulation from cohort 5
+
+```{r}
+#| message: false
+#| warning: false
+#| fig-align: center
+mod <- mread("model/evtools-9.mod")
+out <- mrgsim(mod, end = 480, param = list(COHORT = 5))
+plot(out)
+```
+
+Then examine all the cohorts in a single run
+
+```{r}
+#| message: false
+#| warning: false
+#| fig.width: 8
+#| fig.height: 5
+#| fig-align: center
+mod <- mread("model/evtools-9.mod")
+idata <- expand.idata(COHORT = seq(5))
+idata
+out <- mrgsim(mod, idata = idata, end = 480, recover = "COHORT")
+plot(out, CP ~ time | factor(COHORT), scales = "same")
+```
+
+
 ## evtools-99 automatic dose regimen
 
 This example shows how you can create a `regimen` object that will implement a
