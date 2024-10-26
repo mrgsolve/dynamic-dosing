@@ -24,24 +24,24 @@ evt::ev dose = evt::infuse(50, 1, 50);
 evt::ii(dose, 24);
 evt::addl(dose, DAYS-1);
 
-if(COHORT==1) {
+if(COHORT == 1) {
   self.push(dose);
   return;
 }
 
-if(COHORT==2) {
+if(COHORT == 2) {
   evt::amt(dose, 75);
   self.push(dose);
   return;
 }
 
-if(COHORT==3) {
+if(COHORT == 3) {
   evt::amt(dose, 100); 
   self.push(dose);
   return;
 }
 
-if(COHORT==4) {
+if(COHORT == 4) {
   evt::amt(dose, 25); 
   evt::ii(dose, 12); 
   evt::addl(dose, 2*DAYS-1);
@@ -49,7 +49,7 @@ if(COHORT==4) {
   return;
 }
 
-if(COHORT==5) {
+if(COHORT == 5) {
   evt::ii(dose, 12); 
   evt::addl(dose, 3);
   self.push(dose);

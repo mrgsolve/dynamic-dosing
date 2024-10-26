@@ -255,7 +255,7 @@ here, this allows you to delay a dose or move a dose up in time.
 ```{c, eval = FALSE}
 [ event ] 
 
-if(std::fmod(TIME,INTERVAL)==0) {
+if(std::fmod(TIME,INTERVAL) == 0) {
   evt::infuse(self, DOSE, 1, DOSE/OVER); 
 }
 ```
@@ -388,7 +388,7 @@ A2_0 = 1000;
 
 [ event ] 
 
-if(std::fmod(TIME,72)==0 || NEWIND <= 1) {  
+if(std::fmod(TIME,72) == 0 || NEWIND <= 1) {  
   evt::reset(self);
 }
 ```
@@ -411,15 +411,15 @@ This example shows how we can reset the system and then dose.
 
 if(NEWIND <= 1) { 
   evt::ev dose = evt::bolus(50, 1);
-  evt::ii(dose,12); 
-  evt::addl(dose,22);
+  evt::ii(dose, 12); 
+  evt::addl(dose, 22);
   self.push(dose);
 }
 
-if(evt::near(TIME,290)) {  
+if(evt::near(TIME, 290)) {  
   evt::ev dose = evt::reset(100, 1);
   evt::ii(dose, 24); 
-  evt::addl(dose,10);
+  evt::addl(dose, 10);
   self.push(dose);
 }
 ```
@@ -519,24 +519,24 @@ evt::ev dose = evt::infuse(50, 1, 50);
 evt::ii(dose, 24);
 evt::addl(dose, DAYS-1);
 
-if(COHORT==1) {
+if(COHORT == 1) {
   self.push(dose);
   return;
 }
 
-if(COHORT==2) {
+if(COHORT == 2) {
   evt::amt(dose, 75);
   self.push(dose);
   return;
 }
 
-if(COHORT==3) {
+if(COHORT == 3) {
   evt::amt(dose, 100); 
   self.push(dose);
   return;
 }
 
-if(COHORT==4) {
+if(COHORT == 4) {
   evt::amt(dose, 25); 
   evt::ii(dose, 12); 
   evt::addl(dose, 2*DAYS-1);
@@ -544,7 +544,7 @@ if(COHORT==4) {
   return;
 }
 
-if(COHORT==5) {
+if(COHORT == 5) {
   evt::ii(dose, 12); 
   evt::addl(dose, 3);
   self.push(dose);
@@ -608,7 +608,7 @@ evt::regimen reg;
 
 [ event ] 
 
-if(NEWIND <=1) reg.init(self);
+if(NEWIND <= 1) reg.init(self);
 
 reg.ii(INTERVAL);
 reg.amt(DOSE);
@@ -650,7 +650,7 @@ plot(out)
 idata <- expand.idata(DOSE = c(100, 150, 300), UNTIL = c(240,480))
 idata
 out <- mrgsim(mod, idata = idata, end = 680, recover = "DOSE,UNTIL") 
-plot(out, CP ~ time |factor(DOSE)*factor(UNTIL))
+plot(out, CP ~ time | factor(DOSE) * factor(UNTIL), scales = "same")
 ```
 
 # Source code

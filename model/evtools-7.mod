@@ -17,15 +17,15 @@ depot = TRUE
 
 if(NEWIND <= 1) { 
   evt::ev dose = evt::bolus(50, 1);
-  evt::ii(dose,12); 
-  evt::addl(dose,22);
+  evt::ii(dose, 12); 
+  evt::addl(dose, 22);
   self.push(dose);
 }
 
-if(evt::near(TIME,290)) {  
+if(evt::near(TIME, 290)) {  
   evt::ev dose = evt::reset(100, 1);
   evt::ii(dose, 24); 
-  evt::addl(dose,10);
+  evt::addl(dose, 10);
   self.push(dose);
 }
 

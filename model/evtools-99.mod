@@ -23,7 +23,7 @@ depot = TRUE
 
 [ event ] 
 
-if(NEWIND <=1) reg.init(self);
+if(NEWIND <= 1) reg.init(self);
 
 reg.ii(INTERVAL);
 reg.amt(DOSE);

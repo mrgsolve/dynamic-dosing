@@ -22,7 +22,7 @@ depot = TRUE
 
 if(TIME > END) return;
 
-if(NEWIND <=1 ) { 
+if(NEWIND <=1) { 
   double nextdose = 0;
 }
 

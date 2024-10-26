@@ -19,7 +19,7 @@ depot = TRUE
 
 [ event ] 
 
-if(std::fmod(TIME,INTERVAL)==0) {
+if(std::fmod(TIME,INTERVAL) == 0) {
   evt::infuse(self, DOSE, 1, DOSE/OVER); 
 }
 
