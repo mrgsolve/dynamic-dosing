@@ -10,29 +10,22 @@
  we also monitor based on platelet IPRED to understand what the real time in and 
  out of Gr 4 TCP.
  
- Epochs out of Gr 4 TCP are negative integers representing the 
- cumulative epoch number out of a G4 episode for the individual. 
- Epochs in a Gr 4 TCP episode are positive integers also indicating 
- cumulative epoch number.
+ Epochs out of Gr 4 TCP are negative integers representing the cumulative epoch 
+ number out of a G4 episode for the individual. Epochs in a Gr 4 TCP episode are 
+ positive integers also indicating cumulative epoch number.
  
- Strikes happen at the first monitoring instance when there is 
- Gr4 TCP. This is marked by incrementing `strike` or `istrike`. 
- Epochs are marked by incrementing `epoch`. Then, to get the 
- current value for epoch, return either `strike` or negative 
- `epoch`. This is structured so that Gr 4 TCP epochs run from the 
- first TCP record through (and including) the record where the 
- subject recovers from Gr 4 TCP. 
+ Strikes happen at the first monitoring instance when there is Gr4 TCP. This is 
+ marked by incrementing `strike` or `istrike`. Epochs are marked by incrementing 
+ `epoch`. Then, to get the current value for epoch, return either `strike` or 
+ negative `epoch`. This is structured so that Gr 4 TCP epochs run from the 
+ first TCP record through (and including) the record where the subject recovers 
+ from Gr 4 TCP. 
  
- Clinical monitoring: weekly over first cycle and q2weeks after that.
- True dynamics monitoring happens every day. But notice that monitoring 
- can only happen when observation records are included. Therefore, 
- observations should come in every day in the problem to make this 
- monitoring possible. 
- 
+ Clinical monitoring: weekly over first cycle and every two weeks after that.
+
  Recovery means that:
  - simulated platelets are back to 50x10^9/L or back to baseline
- - the baseline value depends on the type of simulation (either 
- including or not including RUV)
+ - the baseline value depends on the type of simulation
  
  */
 
@@ -41,7 +34,6 @@ public:
   // Constructor
   monitor();
   void reset(const double dose_, const double base_, const int reduce_);
-  bool reduced() {return strike >= 2;}
   bool restart_ok();
   void check(double dv_);
   void icheck(double ipred, double ibase);
@@ -50,7 +42,7 @@ public:
   int track_itcp();
   double dose();      // returns the current dose amount
   
-  /* DATA MEMBERS */
+  /* Public members */
   bool reduce;        // should doses be reduced? or not?
   bool hold;          // on hold
   bool start_holding; // just started holding
