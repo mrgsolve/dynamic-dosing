@@ -13,9 +13,8 @@ More info on `evtools` [in the user guide](https://mrgsolve.org/user-guide/plugi
 Platelet PKPD [model](https://ascpt.onlinelibrary.wiley.com/doi/10.1002/psp4.13201) code and outputs
 
 - Reference:  Fukae, M., Baron, K., Tachibana, M., Mondick, J. & Shimizu, T. 
-  Population pharmacokinetics of total and unbound valemetostat and platelet dynamics in healthy 
-  volunteers and patients with non-Hodgkin lymphoma. CPT Pharmacometrics Syst. Pharmacol. (2024).
-  [link](https://ascpt.onlinelibrary.wiley.com/doi/10.1002/psp4.13201)
+  _Population pharmacokinetics of total and unbound valemetostat and platelet dynamics in healthy volunteers and patients with non-Hodgkin lymphoma_. 
+  CPT Pharmacometrics Syst. Pharmacol. (2024). [link](https://ascpt.onlinelibrary.wiley.com/doi/10.1002/psp4.13201)
 - Main [PKPD model](https://github.com/mrgsolve/dynamic-dosing/blob/main/model/platelet.mod) file contains
   both the valemetostat PK model and the platelet dynamic model
 - Code to implement [platelet monitoring](https://github.com/mrgsolve/dynamic-dosing/blob/main/model/monitor.h) 
