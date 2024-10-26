@@ -8,9 +8,9 @@ Poster: W-007, Wednesday November 13, 2024
 
 More info on `evtools` [in the user guide](https://mrgsolve.org/user-guide/plugins.html#sec-plugin-evtools)
 
-## Content on this website
+## Content in this repository
 
-Platelet PKPD [model](https://ascpt.onlinelibrary.wiley.com/doi/10.1002/psp4.13201) code and outputs
+Platelet PKPD model code and outputs
 
 - Reference: Fukae M, Baron K, Tachibana M, Mondick J, Shimizu T. 
   _Population pharmacokinetics of total and unbound valemetostat and platelet dynamics in healthy volunteers and patients with non-Hodgkin lymphoma_. 
