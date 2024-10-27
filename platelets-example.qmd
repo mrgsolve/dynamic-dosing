@@ -15,8 +15,6 @@ set.seed(1023)
 options(mrgsolve.project = "model")
 ```
 
-
-
 ```{r, echo = TRUE, message = FALSE}
 mod <- mread("platelet.mod", end = 1680, delta = 24)
 
