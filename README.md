@@ -6,7 +6,7 @@
 15th American Conference on Pharmacometrics  
 Poster: W-007, Wednesday November 13, 2024  
 
-More info on `evtools` [in the user guide](https://mrgsolve.org/user-guide/plugins.html#sec-plugin-evtools).
+More info on `evtools` in the [user guide](https://mrgsolve.org/user-guide/plugins.html#sec-plugin-evtools).
 
 ## Content in this repository
 
