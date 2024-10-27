@@ -6,14 +6,10 @@ subtitle: >
   repository linked in the document.
 author: Kyle Baron
 date: today
-fig-align: center
-#title-block-banner: "#F5F5F5"
-#title-block-banner-color: black
 format: 
   html: 
     self-contained: true
     toc: true
-    fig-align: center
 editor_options: 
   chunk_output_type: console
 ---

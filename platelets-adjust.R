@@ -12,7 +12,7 @@ mod <- param(mod, ADJUST  = 1, BMAX = 100, UNTIL = 168*52)
 mod <- update(mod, outvars = outvars(mod)$capture)
 mod <- update(mod, end = 168*55, delta = 2)
 
-data <- expand.ev(ID = 1:300, amt = 0, evid = 2)
+data <- expand.ev(ID = seq(300), amt = 0, evid = 2)
 
 set.seed(10203)
 out <- mrgsim(mod, data = data, obsonly = TRUE)

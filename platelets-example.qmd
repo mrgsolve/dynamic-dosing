@@ -1,7 +1,6 @@
 ---
 format: 
   pdf: 
-    code-line-numbers: false
     geometry: 
       - paperheight=4.3in
       - paperwidth=4.4in 
