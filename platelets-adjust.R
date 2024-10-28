@@ -10,7 +10,7 @@ mod <- mread("model/platelet.mod")
 
 mod <- param(mod, ADJUST  = 1, BMAX = 100, UNTIL = 168*52)
 mod <- update(mod, outvars = outvars(mod)$capture)
-mod <- update(mod, end = 168*55, delta = 2)
+mod <- update(mod, end = 168*55, delta = 1)
 
 data <- expand.ev(ID = seq(300), amt = 0, evid = 2)
 
@@ -18,7 +18,7 @@ set.seed(10203)
 out <- mrgsim(mod, data = data, obsonly = TRUE)
 
 sims <- filter(out, max(epoch)==3, .by = ID)
-sims <- filter(sims, ID==nth(unique(ID), 1))
+sims <- filter(sims, ID==nth(unique(ID), 8))
 
 sims <- mutate(sims, WEEK = time / 168)
 vis <- filter(sims, visit==1)

@@ -107,6 +107,7 @@ evt::regimen reg;
 if(NEWIND <=1) {
   reg.init(self);
   reg.cmt(1);
+  reg.rate(-2);
   reg.ii(24);
   reg.until(UNTIL);  
 }

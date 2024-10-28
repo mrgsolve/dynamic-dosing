@@ -10,7 +10,7 @@ format:
 ```{r, echo = FALSE, message = FALSE}
 library(mrgsolve)
 library(dplyr)
-set.seed(1023)
+set.seed(10231)
 options(mrgsolve.project = "model")
 ```
 
