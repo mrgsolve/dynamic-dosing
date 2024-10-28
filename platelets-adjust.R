@@ -50,5 +50,5 @@ p3 <-
 
 p <- (p1 / p2 / p3) + plot_layout(axes="collect", heights = c(2,1.1,1.1)); p
 
-ggsave("platelets.pdf", width = 5, height = 6, scale = 1)
+ggsave("platelets-adjust.pdf", width = 5, height = 6, scale = 1)
 

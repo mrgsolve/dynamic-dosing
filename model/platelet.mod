@@ -273,7 +273,7 @@ if(EVID==0) {
 reg.amt(plt.dose()); 
 reg.execute();
 
-capture current_dose = plt.dose();
+capture current_dose = TIME < UNTIL ? plt.dose() : 0.0;
 capture epoch = plt.track_tcp();
 capture iepoch = plt.track_itcp();
 capture hold = plt.hold;
