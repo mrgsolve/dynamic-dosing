@@ -466,6 +466,7 @@ syntax for replacing compartment amounts.
 
 
 ```{r}
+#| fig-height: 4
 #| message: false
 #| warning: false
 #| fig-align: center
