@@ -100,16 +100,16 @@ double emx(const double x, const double ec50, const double gam) {
 }
 
 monitor plt;
-evt::regimen reg;
+evt::regimen valemetostat;
 
 [ pk ] 
 
 if(NEWIND <=1) {
-  reg.init(self);
-  reg.cmt(1);
-  reg.rate(-2);
-  reg.ii(24);
-  reg.until(UNTIL);  
+  valemetostat.init(self);
+  valemetostat.cmt(1);
+  valemetostat.rate(-2);
+  valemetostat.ii(24);
+  valemetostat.until(UNTIL);  
 }
 
 double FL106    = STUDY==106 ? 1 : 0;
@@ -271,12 +271,11 @@ if(EVID==0) {
   plt.icheck(IPRED,BASE);
 }
 
-reg.amt(plt.dose()); 
-reg.execute();
+valemetostat.amt(plt.dose()); 
+valemetostat.execute();
 
 capture current_dose = TIME < UNTIL ? plt.dose() : 0.0;
 capture epoch = plt.track_tcp();
-capture iepoch = plt.track_itcp();
 capture hold = plt.hold;
 
 [ capture ] UNBOUND = CFREE, PLATELET = IPRED, visit
