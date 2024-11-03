@@ -268,7 +268,6 @@ while(Y < 0) {
 bool visit = check_time(TIME, ADJUST, MONMAX);
 if(EVID==0) { 
   if(visit) plt.check(Y);
-  plt.icheck(IPRED,BASE);
 }
 
 valemetostat.amt(plt.dose()); 

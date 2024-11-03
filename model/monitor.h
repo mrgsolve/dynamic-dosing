@@ -12,9 +12,9 @@
  number out of a G4 episode for the individual. Epochs in a Gr 4 TCP episode are 
  positive integers also indicating cumulative epoch number.
  
- Strikes happen at the first monitoring instance when there is Gr4 TCP. This is 
- marked by incrementing `strike` . Epochs are marked by incrementing 
- `epoch`. Then, to get the current value for epoch, return either `strike` or 
+ Events happen at the first monitoring instance when there is Gr4 TCP. This is 
+ marked by incrementing `count` . Epochs are marked by incrementing 
+ `epoch`. Then, to get the current value for epoch, return either `count` or 
  negative `epoch`. This is structured so that Gr 4 TCP epochs run from the 
  first TCP record through (and including) the record where the subject recovers 
  from Gr 4 TCP. 
@@ -37,36 +37,35 @@ public:
   int track_tcp();
   double dose();      // returns the current dose amount
   
-  /* Public members */
   bool reduce;        // should doses be reduced? or not?
   bool hold;          // on hold
-  bool start_holding; // just started holding
-  bool stop_holding;  // just stopped holding
-  bool term;          // true once the 4th TCP is hit
+  bool holdstart;     // just started holding
+  bool holdstop;      // just stopped holding
+  bool term;          // true once the 4th Gr4 TCP is hit
   int epoch;          // incremented when platelets (Y) return to 50 or base
-  int strike;         // incremented when platelets (Y) drop below 25
+  int count;          // incremented when platelets (Y) drop below 25
   double dv;          // platelets (Y)
-  double bdv;         // baseline platelets (Y)
+  double base;        // baseline platelets (Y)
   double dose1;       // starting dose (mg)
   double dose2;       // reduced dose 1 eg: 200 --> 150; this is dose1 - 50
   double dose3;       // reduced dose 2 eg: 150 --> 100; this is dose2 - 50
-  bool g4;            // true once Y     < 25 and until recovered
+  bool g4tcp;        // true once Y < 25 and until recovered
 };
 
 void monitor::reset(const double dose_, const double base_, const int reduce_) {
   reduce = reduce_;    
   hold = false;
-  start_holding = false;
-  stop_holding = false;
+  holdstart = false;
+  holdstop = false;
   term = false;
   epoch = 1;
-  strike = 0;
+  count = 0;
   dv = 0;
-  bdv = base_;
+  base = base_;
   dose1 = dose_;
   dose2 = dose1 - 50;
   dose3 = dose2 - 50;
-  g4 = false;
+  g4tcp = false;
   if(reduce==0) {
     dose2 = dose1;
     dose3 = dose1;
@@ -79,23 +78,23 @@ monitor::monitor() {
 
 double monitor::dose() {
   if(hold || term) return 0;
-  if(strike < 2) {
+  if(count < 2) {
     return dose1;
   }
-  if(strike == 2) { 
+  if(count == 2) { 
     return dose2;
   }
-  if(strike == 3) {
+  if(count == 3) {
     return dose3;
   }
   return 0;
 }
 
 int monitor::track_tcp() {
-  if(stop_holding || start_holding || hold) {
-    stop_holding  = false; 
-    start_holding = false;
-    return strike;
+  if(holdstop || holdstart || hold) {
+    holdstop  = false; 
+    holdstart = false;
+    return count;
   } 
   return -1*epoch;
 }
@@ -104,19 +103,19 @@ void monitor::check(double dv_) {
   if(dv_ == 0 || term) return;
   dv = dv_;
   if(dv < 25 && !hold) { // go into holding pattern
-    g4 = true;
+    g4tcp = true;
     hold = true;
-    start_holding = true;
-    ++strike;
-    if(strike == 4) {
+    holdstart = true;
+    ++count;
+    if(count == 4) {
       term = true;
     }
     return; 
   }
   if(hold && restart_ok()) {  
-    stop_holding = true;
+    holdstop = true;
     hold = false;
-    g4 = false;
+    g4tcp = false;
     ++epoch;
   }
   return;
@@ -124,7 +123,7 @@ void monitor::check(double dv_) {
 
 bool monitor::restart_ok() {
   if(term) return false;
-  return dv >= 50 || abs(dv - bdv) < 0.01;
+  return dv >= 50 || abs(dv - base) < 0.01;
 }
 
 bool check_time(const double time, const int adjust, const double mmax) {
