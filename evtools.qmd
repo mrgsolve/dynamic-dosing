@@ -336,6 +336,7 @@ the duration of dosing.
 ```{r}
 #| message: false
 #| warning: false
+#| fig-width: 8
 #| fig-align: center
 idata <- expand.idata(END = c(60, 120, 240, 480, 600))
 head(idata)
@@ -352,7 +353,7 @@ we'll start the dose later in the simulation. In contrast,
 `evtools-2` started the dosing "now".
 
 ```{c, eval = FALSE}
-[ param ] DOSE = 100, OVER = 2
+[ param ] START = 60, DOSE = 100, OVER = 2
 
 [ event ] 
 
@@ -360,7 +361,7 @@ if(NEWIND > 1) return;
 
 evt::ev dose = evt::bolus(DOSE, 1); 
 evt::rate(dose, DOSE/OVER);
-evt::retime(dose, 120); 
+evt::retime(dose, START); 
 evt::ss(dose, 1); 
 evt::ii(dose, 24); 
 evt::addl(dose, 5); 
@@ -373,12 +374,14 @@ In this example, we'll again simulate several dose levels
 ```{r}
 #| message: false
 #| warning: false
+#| fig.width: 8
+#| fig.height: 4
 #| fig-align: center
 mod <- mread("model/evtools-5.mod")
-idata <- expand.idata(DOSE = c(100, 150, 200))
+idata <- expand.idata(DOSE = c(100,200), START = c(60,220))
 head(idata)
-out <- mrgsim(mod, idata = idata, end = 480)
-plot(out)
+out <- mrgsim(mod, idata = idata, end = 480, recover = "DOSE")
+plot(out, CP ~ time | factor(DOSE), scales = "same")
 ```
 
 ## evtools-6 reset the system

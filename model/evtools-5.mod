@@ -8,6 +8,7 @@ CL = 1
 V = 32
 KA = 2
 
+START = 60
 DOSE = 100
 OVER = 2
 
@@ -22,7 +23,7 @@ if(NEWIND > 1) return;
 
 evt::ev dose = evt::bolus(DOSE, 1); 
 evt::rate(dose, DOSE/OVER);
-evt::retime(dose, 120); 
+evt::retime(dose, START); 
 evt::ss(dose, 1); 
 evt::ii(dose, 24); 
 evt::addl(dose, 5); 
