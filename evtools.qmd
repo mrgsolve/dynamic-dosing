@@ -113,6 +113,8 @@ In this event block, we just need to execute a single dose to `A1` right when
 we come to a new individual
 
 ```{c, eval = FALSE}
+[ param ] DOSE = 100
+
 [ event ] 
 
 if(NEWIND > 1) return; 
@@ -143,6 +145,8 @@ In this example, we give multiple doses by specifying the dose interval and
 the number of additional doses. 
 
 ```{c, eval = FALSE}
+[ param ] DOSE = 100, INTERVAL = 24, TOTAL = 10
+
 [ event ] 
 
 if(NEWIND > 1) return; 
@@ -203,6 +207,8 @@ dose to steady state at a given dosing interval (a parameter called
 `INTERVAL`) and give some additional doses (a parameter called `TOTAL`).
 
 ```{c, eval = FALSE}
+[ param ] DOSE = 100, INTERVAL = 24, TOTAL = 10
+
 [ event ] 
 
 if(NEWIND > 1) return; 
@@ -249,9 +255,11 @@ you always know when the next dose will happen. Although not illustrated
 here, this allows you to delay a dose or move a dose up in time. 
 
 ```{c, eval = FALSE}
+[ param ] DOSE = 100, INTERVAL = 24, OVER = 2
+
 [ event ] 
 
-if(std::fmod(TIME,INTERVAL) == 0) {
+if(std::fmod(TIME, INTERVAL) == 0) {
   evt::infuse(self, DOSE, 1, DOSE/OVER); 
 }
 ```
@@ -290,6 +298,9 @@ think this approach is a little more flexible than what we saw in
 `evtools-3`. 
 
 ```{c, eval = FALSE}
+[ param ] 
+DOSE = 100, INTERVAL = 24, OVER = 2, END = 240
+
 [ event ] 
 
 if(TIME > END) return;
@@ -340,6 +351,8 @@ we'll start the dose later in the simulation. In contrast,
 `evtools-2` started the dosing "now".
 
 ```{c, eval = FALSE}
+[ param ] DOSE = 100, OVER = 2
+
 [ event ] 
 
 if(NEWIND > 1) return; 
@@ -508,6 +521,8 @@ number of days of dosing.
 # See cohort specification in the $EVENT block
 
 ```{c, eval = FALSE}
+[ param ] COHORT = 0, DAYS = 14
+
 [ event ] 
 
 if(NEWIND > 1 || COHORT < 1 || COHORT > 5) return;
@@ -602,6 +617,8 @@ we have some additional code here, including declaring this `regimen` object
 ```{c, eval = FALSE}
 [ global ]
 evt::regimen reg; 
+
+[ param ] INTERVAL = 24, UNTIL = 480, DOSE = 100, OVER  = 2
 
 [ event ] 
 

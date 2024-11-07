@@ -11,7 +11,6 @@ KA = 2
 DOSE = 100
 OVER = 2
 
-
 [ pkmodel ]
 
 cmt = "A1,A2"
