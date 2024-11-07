@@ -30,7 +30,8 @@ system. In each example, it should be clear where decisions can be be made
 to alter dosing regimen specifics. 
 
 All of the code for running these examples is available in a 
-[github](https://github.com/mrgsolve/dynamic-dosing) repository.
+[GitHub](https://github.com/mrgsolve/dynamic-dosing) repository. Specifically, 
+check out the [model](https://github.com/mrgsolve/dynamic-dosing/tree/main/model) directory. 
 
 ## Reference
 
