@@ -5,6 +5,8 @@
 **Simulating Adaptive Dosing Regimens from PK and PKPD Models Using mrgsolve**   
 15th American Conference on Pharmacometrics  
 Poster: [W-007](https://cdmcd.co/GwEMgX ), Wednesday November 13, 2024  
+PDF: [docs/poster.pdf](docs/poster.pdf)
+
 
 More info on `evtools` in the [user guide](https://mrgsolve.org/user-guide/plugins.html#sec-plugin-evtools).
 
